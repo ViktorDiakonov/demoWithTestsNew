@@ -22,4 +22,8 @@ public interface Service {
 
     List<Employee> getCountry(String country);
 
+    List<Employee> getAllName(String name);
+
+   List<Employee> getCountryName(String country, String name);
+
 }

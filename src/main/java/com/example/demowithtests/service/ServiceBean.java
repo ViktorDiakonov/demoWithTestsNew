@@ -75,4 +75,17 @@ public class ServiceBean implements Service {
     public List<Employee> getCountry(String country) {
         return repository.getEmployeeByCountry(country);
     }
+
+    @Override
+    public List<Employee> getAllName(String name) {
+        return repository.getAllByName(name);
+    }
+
+
+    @Override
+    public List<Employee> getCountryName(String country, String name) {
+        return repository.getByCountryAndName(country, name);
+    }
+
+
 }
