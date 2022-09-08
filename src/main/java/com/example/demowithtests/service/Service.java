@@ -18,4 +18,8 @@ public interface Service {
 
     void removeAll();
 
+    List<Employee> getName(String name);
+
+    List<Employee> getCountry(String country);
+
 }

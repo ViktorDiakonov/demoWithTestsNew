@@ -30,7 +30,7 @@ public class ServiceBean implements Service {
     @Override
     public Employee getById(Integer id) {
         Employee employee = repository.findById(id)
-               // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+                // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceNotFoundException::new);
          /*if (employee.getIsDeleted()) {
             throw new EntityNotFoundException("Employee was deleted with id = " + id);
@@ -40,8 +40,7 @@ public class ServiceBean implements Service {
 
     @Override
     public Employee updateById(Integer id, Employee employee) {
-        return repository.findById(id)
-                .map(entity -> {
+        return repository.findById(id).map(entity -> {
                     entity.setName(employee.getName());
                     entity.setEmail(employee.getEmail());
                     entity.setCountry(employee.getCountry());
@@ -56,7 +55,7 @@ public class ServiceBean implements Service {
     public void removeById(Integer id) {
         //repository.deleteById(id);
         Employee employee = repository.findById(id)
-               // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
+                // .orElseThrow(() -> new EntityNotFoundException("Employee not found with id = " + id));
                 .orElseThrow(ResourceWasDeletedException::new);
         //employee.setIsDeleted(true);
         repository.delete(employee);
@@ -66,6 +65,14 @@ public class ServiceBean implements Service {
     @Override
     public void removeAll() {
         repository.deleteAll();
+    }
 
+    public List<Employee> getName(String name) {
+        return repository.getEmployeeByName(name);
+    }
+
+    @Override
+    public List<Employee> getCountry(String country) {
+        return repository.getEmployeeByCountry(country);
     }
 }
