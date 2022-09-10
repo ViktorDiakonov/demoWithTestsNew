@@ -24,6 +24,6 @@ public interface Service {
 
     List<Employee> getAllName(String name);
 
-   List<Employee> getCountryName(String country, String name);
+   List<Employee> getNameByPhone(Integer phone);
 
 }

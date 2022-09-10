@@ -61,15 +61,31 @@ public class Controller {
         service.removeAll();
     }
 
+    // выводит всех пользователей с указанным именем
     @GetMapping(value = "/users", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getName(@RequestParam (value = "name") String name){
         return service.getName(name);
     }
 
+    // выводит всех пользователей по указанной стране
     @GetMapping(value = "/users", params = {"country"})
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getCountry(@RequestParam (value = "country") String country){
         return service.getCountry(country);
+    }
+
+    // выводит всех пользователей из колонки "name"
+    @GetMapping(value = "/users", params = {"allname"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> getAllName(@RequestParam (value = "name") String name){
+        return service.getAllName(name);
+    }
+
+    //получение пользователя по его номеру телефона
+    @GetMapping(value = "/users", params = {"phone"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> getNameByPhone(@RequestParam (value = "phone") Integer phone) {
+        return service.getNameByPhone(phone);
     }
 }

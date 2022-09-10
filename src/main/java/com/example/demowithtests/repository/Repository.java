@@ -13,7 +13,7 @@ public interface Repository extends JpaRepository<Employee, Integer> {
     Employee findByName(String name);
 
     // выводит всех пользователей с указанным именем
-    @Query("SELECT u FROM Employee u WHERE u.name = ?1")
+    @Query("SELECT e FROM Employee e WHERE e.name = ?1")
     List<Employee> getEmployeeByName(String name);
 
     // выводит всех пользователей по указанной стране
@@ -24,6 +24,8 @@ public interface Repository extends JpaRepository<Employee, Integer> {
     @Query(value = "SELECT name FROM users", nativeQuery = true)
     List<Employee> getAllByName(String name);
 
-    @Query(value = "SELECT * FROM users WHERE country = ? AND name = ?", nativeQuery = true)
-    List<Employee> getByCountryAndName (String country, String name);
+    //получение пользователя по его номеру телефона
+    @Query("SELECT e FROM Employee e WHERE e.phone = ?1")
+    List<Employee> getEmployeeByPhone (Integer phone);
+
 }

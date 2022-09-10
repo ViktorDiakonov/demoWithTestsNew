@@ -81,10 +81,9 @@ public class ServiceBean implements Service {
         return repository.getAllByName(name);
     }
 
-
     @Override
-    public List<Employee> getCountryName(String country, String name) {
-        return repository.getByCountryAndName(country, name);
+    public List<Employee> getNameByPhone(Integer phone) {
+        return repository.getEmployeeByPhone(phone);
     }
 
 
