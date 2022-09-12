@@ -86,5 +86,15 @@ public class ServiceBean implements Service {
         return repository.getEmployeeByPhone(phone);
     }
 
-
+    public Employee updateByPhone(Integer phone, Employee employee) {
+        return repository.findById(phone).map(entity -> {
+                    entity.setName(employee.getName());
+                    entity.setEmail(employee.getEmail());
+                    entity.setCountry(employee.getCountry());
+                    entity.setAddress(employee.getAddress());
+                    entity.setPhone(employee.getPhone());
+                    return repository.save(entity);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Employee not found with phone = " + phone));
+    }
 }

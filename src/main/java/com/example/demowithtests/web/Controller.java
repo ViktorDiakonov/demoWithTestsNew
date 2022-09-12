@@ -88,4 +88,12 @@ public class Controller {
     public List<Employee> getNameByPhone(@RequestParam (value = "phone") Integer phone) {
         return service.getNameByPhone(phone);
     }
+
+    //обновление пользователя по телефону
+    @PutMapping("/users/{phone}")
+    @ResponseStatus(HttpStatus.OK)
+    public Employee updatePhone(@PathVariable("phone") Integer phone, @RequestBody Employee employee) {
+
+        return service.updateById(phone, employee);
+    }
 }
