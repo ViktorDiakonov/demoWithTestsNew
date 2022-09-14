@@ -26,5 +26,5 @@ public interface Service {
 
    List<Employee> getNameByPhone(Integer phone);
 
-    Employee updateByPhone(Integer phone, Employee plane);
+    Employee updateByPhone(Integer phone, Employee employee);
 }
