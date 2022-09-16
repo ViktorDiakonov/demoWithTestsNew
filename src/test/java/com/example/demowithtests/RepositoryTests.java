@@ -14,7 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import java.util.List;
 import java.util.Optional;
 
-@DataJpaTest
+@ DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RepositoryTests {
 
@@ -47,13 +47,9 @@ public class RepositoryTests {
     @Order(3)
     public void getListOfEmployeeTest() {
 
-        Employee employee = Employee.builder().name("Mark").build();
-
-        repository.save(employee);
-
         List<Employee> employeesList = repository.findAll();
 
-        Assertions.assertThat(employeesList.get(0).getName()).isEqualTo("Mark");
+        Assertions.assertThat(employeesList.size()).isGreaterThan(0);
 
     }
 
@@ -93,4 +89,37 @@ public class RepositoryTests {
         Assertions.assertThat(employee1).isNull();
     }
 
+    @Test
+    public void getEmployeeByNameTest() {
+        Employee employee = Employee.builder().name("Bob").build();
+        repository.save(employee);
+        List<Employee> employeesList = repository.findAll();
+        Assertions.assertThat(employeesList.get(0).getName()).isEqualTo("Bob");
+    }
+
+    @Test
+    public void getEmployeeByPhoneTest() {
+        Employee employee = Employee.builder().phone(123456).build();
+        repository.save(employee);
+        List<Employee> employeesList = repository.findAll();
+        Assertions.assertThat(employeesList.get(0).getPhone()).isEqualTo(123456);
+    }
+
+    @Test
+    public void getEmployeeByCountryTest() {
+        Employee employee = new Employee();
+        employee.setCountry("uk");
+        repository.save(employee);
+        List<Employee> employeesList = repository.findAll();
+        Assertions.assertThat(employeesList.get(0).getCountry()).isEqualTo("uk");
+    }
+
+    @Test
+    public void getAllByNameTest() {
+        Employee employee = Employee.builder().name("Bob").build();
+        repository.save(employee);
+        List<Employee> employeesList = repository.findAll();
+        Assertions.assertThat(employeesList.get(0).getName()).isEqualTo("Bob");
+
+    }
 }
