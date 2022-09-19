@@ -3,6 +3,7 @@ package com.example.demowithtests;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.Repository;
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -102,7 +103,8 @@ public class RepositoryTests {
         Employee employee = Employee.builder().phone(123456).build();
         repository.save(employee);
         List<Employee> employeesList = repository.findAll();
-        Assertions.assertThat(employeesList.get(0).getPhone()).isEqualTo(123456);
+        //Assertions.assertThat(employeesList.get(0).getPhone()).isEqualTo(123456);
+        Assert.assertEquals(employeesList.get(0).getPhone(),123456,0.1);
     }
 
     @Test
@@ -120,6 +122,7 @@ public class RepositoryTests {
         repository.save(employee);
         List<Employee> employeesList = repository.findAll();
         Assertions.assertThat(employeesList.get(0).getName()).isEqualTo("Bob");
+
 
     }
 }

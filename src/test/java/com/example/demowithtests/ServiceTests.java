@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,4 +66,82 @@ public class ServiceTests {
         given(repository.findById(anyInt())).willReturn(Optional.empty());
         service.getById(employee.getId());
     }
+
+    @Test
+    public void whenGivenName_shouldReturnListEmployee() {
+
+        Employee user = Employee.builder().name("Bob").build();
+
+        List<Employee> employee = new ArrayList<>();
+        employee.add(user);
+
+        when(repository.getEmployeeByName(user.getName())).thenReturn(employee);
+
+        List<Employee> expected = service.getName(user.getName());
+
+        assertThat(expected.get(0).getName()).isEqualTo("Bob");
+        assertThat(expected).isSameAs(employee);
+
+        verify(repository).getEmployeeByName(user.getName());
+    }
+
+    @Test
+    public void whenGivenCountry_shouldReturnListEmployee() {
+
+        Employee user = new Employee();
+        user.setCountry("usa");
+
+        List<Employee> employee = new ArrayList<>();
+        employee.add(user);
+
+        when(repository.getEmployeeByCountry(user.getCountry())).thenReturn(employee);
+
+        List<Employee> expected = service.getCountry(user.getCountry());
+
+        assertThat(expected.get(0).getCountry()).isEqualTo("usa");
+        assertThat(expected.size()).isGreaterThan(0);
+        assertThat(expected).isSameAs(employee);
+
+        verify(repository).getEmployeeByCountry(user.getCountry());
+    }
+
+    @Test
+    public void whenGivenPhone_shouldReturnListEmployee() {
+
+        Employee user = new Employee();
+        user.setPhone(123456);
+
+        List<Employee> employee = new ArrayList<>();
+        employee.add(user);
+
+        when(repository.getEmployeeByPhone(user.getPhone())).thenReturn(employee);
+
+        List<Employee> expected = service.getNameByPhone(user.getPhone());
+
+        assertThat(expected.get(0).getPhone()).isEqualTo(123456);
+        assertThat(expected.size()).isGreaterThan(0);
+        assertThat(expected).isSameAs(employee);
+
+        verify(repository).getEmployeeByPhone(user.getPhone());
+    }
+
+    @Test
+    public void whenEmployeeGetAllName_shouldReturnAllEmployeeThisName() {
+
+        Employee user = Employee.builder().name("Viktor").build();
+
+        List<Employee> employee = new ArrayList<>();
+        employee.add(user);
+
+        when(repository.getAllByName(user.getName())).thenReturn(employee);
+
+        List<Employee> expected = service.getAllName(user.getName());
+
+        assertThat(expected.get(0).getName()).isEqualTo("Viktor");
+        assertThat(expected).isSameAs(employee);
+
+        verify(repository).getAllByName(user.getName());
+    }
+
+
 }
