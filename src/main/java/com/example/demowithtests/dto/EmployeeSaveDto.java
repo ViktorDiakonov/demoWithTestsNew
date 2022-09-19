@@ -6,7 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class EmployeeDto {
+public class EmployeeSaveDto {
 
     public Integer id;
 

@@ -1,7 +1,7 @@
 package com.example.demowithtests.util.config;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeDto;
+import com.example.demowithtests.dto.EmployeeSaveDto;
 import com.example.demowithtests.dto.EmployeeReadDto;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,8 @@ public class EmployeeConverter {
         return mapperFacade;
     }
 
-    public EmployeeDto toDto(Employee entity) {
-        return mapperFacade.map(entity, EmployeeDto.class);
+    public EmployeeSaveDto toDto(Employee entity) {
+        return mapperFacade.map(entity, EmployeeSaveDto.class);
     }
 
     public EmployeeReadDto toReadDto(Employee entity) {
@@ -28,7 +28,7 @@ public class EmployeeConverter {
     }
 
 
-    public Employee fromDto(EmployeeDto dto) {
+    public Employee fromDto(EmployeeSaveDto dto) {
         return mapperFacade.map(dto, Employee.class);
     }
 }
