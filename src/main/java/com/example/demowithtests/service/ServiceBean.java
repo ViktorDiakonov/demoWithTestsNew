@@ -2,8 +2,8 @@ package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.Repository;
-import com.example.demowithtests.util.ResourceNotFoundException;
-import com.example.demowithtests.util.ResourceWasDeletedException;
+import com.example.demowithtests.util.exeption.ResourceNotFoundException;
+import com.example.demowithtests.util.exeption.ResourceWasDeletedException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
