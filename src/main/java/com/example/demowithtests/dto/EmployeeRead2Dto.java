@@ -8,18 +8,17 @@ import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Date;
 
-public class EmployeeReadDto {
+public class EmployeeRead2Dto {
 
     @NotNull(message = "Name may not be null")
     @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
     @Schema(description = "Name of an employee.", example = "Billy", required = true)
     public String name;
 
-    @NotNull
     public String country;
 
     @NotNull
-    public String address;
+    public int phone;
 
     @Email
     @NotNull

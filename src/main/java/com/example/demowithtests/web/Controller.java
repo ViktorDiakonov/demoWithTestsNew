@@ -1,8 +1,7 @@
 package com.example.demowithtests.web;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeSaveDto;
-import com.example.demowithtests.dto.EmployeeReadDto;
+import com.example.demowithtests.dto.*;
 import com.example.demowithtests.service.Service;
 import com.example.demowithtests.util.config.EmployeeConverter;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,16 +30,38 @@ public class Controller {
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "This is endpoint to add a new employee.", description = "Create request to add a new employee.", tags = {"Employee"})
+    @Operation(summary = "This is endpoint to add a new employee.", description =
+            "Create request to add a new employee.", tags = {"Employee"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
+
     public EmployeeSaveDto saveEmployee(@RequestBody @Valid EmployeeSaveDto requestForSave) {
 
         var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-        var dto = converter.toDto(service.create(employee));
+        var dto = converter.toSaveDto(service.create(employee));
+
+        return dto;
+
+    }
+
+    //save 2 sto
+    @PostMapping("/users/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "This is endpoint to add a new employee.", description =
+            "Create request to add a new employee.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+
+    public EmployeeSave2Dto saveEmployee2(@RequestBody @Valid EmployeeSave2Dto requestForSave) {
+
+        var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
+        var dto = converter.toSave2Dto(service.create(employee));
 
         return dto;
     }
@@ -55,12 +76,14 @@ public class Controller {
     //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "This is endpoint returned a employee by his id.", description = "Create request to read a employee by id", tags = {"Employee"})
+    @Operation(summary = "This is endpoint returned a employee by his id.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "OK. pam pam param."),
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
+
     public EmployeeReadDto getEmployeeById(@PathVariable Integer id) {
         log.debug("getEmployeeById() Controller - start: id = {}", id);
         var employee = service.getById(id);
@@ -70,12 +93,44 @@ public class Controller {
         return dto;
     }
 
+    @GetMapping("/users/dto/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "This is endpoint returned a employee by his id.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+
+    public EmployeeRead2Dto getEmployeeById2 (@PathVariable Integer id) {
+        log.debug("getEmployeeById() Controller - start: id = {}", id);
+        var employee = service.getById(id);
+        log.debug("getById() Controller - to dto start: id = {}", id);
+        var dto = converter.toRead2Dto(employee);
+        log.debug("getEmployeeById() Controller - end: name = {}", dto.name);
+        return dto;
+
+    }
+
     //Обновление юзера
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+    @Operation(summary = "This is endpoint to update an employee by his id.", description =
+            "Create request to update an employee bu id", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK.Employee by id was successfully updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
 
-        return service.updateById(id, employee);
+    public EmployeeUpdateDto UpdateEmployee(@RequestBody @Valid EmployeeUpdateDto requestForUpdate, @PathVariable Integer id) {
+
+        var employee = converter.getMapperFacade().map(requestForUpdate, Employee.class);
+        var dto = converter.toUpdateDto(service.create(employee));
+
+        return dto;
+
     }
 
     //Удаление по id
