@@ -26,7 +26,7 @@ public class EmployeeUpdateDto {
     public String email;
 
     @NotNull(message = "Phone may not be null")
-    public Integer phone;
+    public String phone;
 
     //todo: dfhgjkdfhg Jira - 5544
     public Date date = Date.from(Instant.now());

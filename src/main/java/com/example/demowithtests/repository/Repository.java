@@ -2,6 +2,7 @@ package com.example.demowithtests.repository;
 
 import com.example.demowithtests.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface Repository extends JpaRepository<Employee, Integer> {
 
     //получение пользователя по его номеру телефона
     @Query("SELECT e FROM Employee e WHERE e.phone = ?1")
-    List<Employee> getEmployeeByPhone (Integer phone);
+    List<Employee> getEmployeeByPhone (String phone);
 
+    @Query(value = "SELECT * FROM Users u WHERE phone like ?%", nativeQuery = true)
+    List<Employee> getEmployeeByPhoneU(String phone);
 }

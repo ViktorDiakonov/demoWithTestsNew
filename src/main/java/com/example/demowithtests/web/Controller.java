@@ -27,6 +27,8 @@ public class Controller {
     private final Service service;
     private final EmployeeConverter converter;
 
+
+
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
@@ -37,15 +39,14 @@ public class Controller {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-
     public EmployeeSaveDto saveEmployee(@RequestBody @Valid EmployeeSaveDto requestForSave) {
 
         Employee employee = converter.getMapperFacade().map(requestForSave, Employee.class);
         EmployeeSaveDto dto = converter.toSaveDto(service.create(employee));
 
         return dto;
-
     }
+
 
     //save 2 dto
     @PostMapping("/users/save")
@@ -57,7 +58,6 @@ public class Controller {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-
     public EmployeeSave2Dto saveEmployee2(@RequestBody @Valid EmployeeSave2Dto requestForSave) {
 
         var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
@@ -66,24 +66,47 @@ public class Controller {
         return dto;
     }
 
+
     //Получение списка юзеров
+    @Operation(summary = "This is endpoint to get list of all employees.", description =
+            "Create request to find all employees.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllUsers() {
         return service.getAll();
     }
 
+
+    //Получение списка юзеров по 38
+    @GetMapping("/users/phones/{phone}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "This is endpoint to find employee by phone code.", description =
+            "Create request to find employees.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+    public List<Employee> getClientsByCodes(@PathVariable("phone") String phone) {
+        return service.getEmployeeByPhoneU(phone);
+    }
+
+
     //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "This is endpoint returned a employee by his id.", description =
+    @Operation(summary = "This is endpoint returned employee by his id.", description =
             "Create request to read a employee by id", tags = {"Employee"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-
     public EmployeeReadDto getEmployeeById(@PathVariable Integer id) {
         log.debug("getEmployeeById() Controller - start: id = {}", id);
         var employee = service.getById(id);
@@ -92,6 +115,7 @@ public class Controller {
         log.debug("getEmployeeById() Controller - end: name = {}", dto.name);
         return dto;
     }
+
 
     @GetMapping("/users/dto/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -127,6 +151,7 @@ public class Controller {
         return dto;
     }
 
+
     //Обновление юзера2
     @PatchMapping ("/users/update2/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -142,26 +167,51 @@ public class Controller {
         return dto;
     }
 
+
     //Удаление по id
     @PatchMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "This is endpoint deleted employee by his id.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public void removeEmployeeById(@PathVariable Integer id) {
         service.removeById(id);
     }
 
+
     //Удаление всех юзеров
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "This is endpoint deleted all employees.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public void removeAllUsers() {
         service.removeAll();
     }
 
+
     // выводит всех пользователей с указанным именем
     @GetMapping(value = "/users", params = {"name"})
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "This is endpoint to get all employees by name.", description =
+            "Create request to get employees by name", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public List<Employee> getName(@RequestParam (value = "name") String name){
         return service.getName(name);
     }
+
 
     // выводит всех пользователей по указанной стране
     @GetMapping(value = "/users", params = {"country"})
@@ -170,6 +220,7 @@ public class Controller {
         return service.getCountry(country);
     }
 
+
     // выводит всех пользователей из колонки "name"
     @GetMapping(value = "/users", params = {"allname"})
     @ResponseStatus(HttpStatus.OK)
@@ -177,18 +228,19 @@ public class Controller {
         return service.getAllName(name);
     }
 
+
     //получение пользователя по его номеру телефона
     @GetMapping(value = "/users", params = {"phone"})
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getNameByPhone(@RequestParam (value = "phone") Integer phone) {
+    public List<Employee> getNameByPhone(@RequestParam (value = "phone") String phone) {
         return service.getNameByPhone(phone);
     }
 
-    //обновление пользователя по телефону
-    @PutMapping("/users/phone/{phone}")
-    @ResponseStatus(HttpStatus.OK)
-    public Employee updatePhone(@PathVariable("phone") Integer phone, @RequestBody Employee employee) {
-
-        return service.updateById(phone, employee);
-    }
+//    //обновление пользователя по телефону
+//    @PutMapping("/users/phone/{phone}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Employee updatePhone(@PathVariable("phone") String phone, @RequestBody Employee employee) {
+//
+//        return service.updateById(phone, employee);
+//    }
 }

@@ -82,19 +82,31 @@ public class ServiceBean implements Service {
     }
 
     @Override
-    public List<Employee> getNameByPhone(Integer phone) {
+    public List<Employee> getNameByPhone(String phone) {
         return repository.getEmployeeByPhone(phone);
     }
 
-    public Employee updateByPhone(Integer phone, Employee employee) {
-        return repository.findById(phone).map(entity -> {
-                    entity.setName(employee.getName());
-                    entity.setEmail(employee.getEmail());
-                    entity.setCountry(employee.getCountry());
-                    entity.setAddress(employee.getAddress());
-                    entity.setPhone(employee.getPhone());
-                    return repository.save(entity);
-                })
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found with phone = " + phone));
+    @Override
+    public Employee updateByPhone(String phone, Employee employee) {
+        return null;
+    }
+
+//    public Employee updateByPhone(String phone, Employee employee) {
+//        return repository.getEmployeeByPhone(phone).map(entity -> {
+//                    entity.setName(employee.getName());
+//                    entity.setEmail(employee.getEmail());
+//                    entity.setCountry(employee.getCountry());
+//                    entity.setAddress(employee.getAddress());
+//                    entity.setPhone(employee.getPhone());
+//                    return repository.save(entity);
+//                })
+//                .orElseThrow(() -> new EntityNotFoundException("Employee not found with phone = " + phone));
+//    }
+
+    @Override
+    public List<Employee> getEmployeeByPhoneU(String phone) {
+        List<Employee> employees = repository.getEmployeeByPhoneU(phone);
+        employees.stream().forEach(e -> System.err.println(e.getName() + " Доброго вечора,ми з Украины"));
+        return employees;
     }
 }

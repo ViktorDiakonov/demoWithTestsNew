@@ -24,7 +24,10 @@ public interface Service {
 
     List<Employee> getAllName(String name);
 
-   List<Employee> getNameByPhone(Integer phone);
+   List<Employee> getNameByPhone(String phone);
 
-    Employee updateByPhone(Integer phone, Employee employee);
+    Employee updateByPhone(String phone, Employee employee);
+
+    List<Employee>getEmployeeByPhoneU(String phone);
+
 }

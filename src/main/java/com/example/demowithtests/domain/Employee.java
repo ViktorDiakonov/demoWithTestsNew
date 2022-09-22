@@ -20,7 +20,7 @@ public class Employee {
     private String country;
     private String email;
     private String address;
-    private Integer phone;
+    private String phone;
 
     public String getAddress() {
         return address;
@@ -30,11 +30,11 @@ public class Employee {
         this.address = address;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

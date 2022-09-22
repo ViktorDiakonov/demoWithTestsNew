@@ -28,5 +28,5 @@ public class EmployeeSaveDto {
     public String email;
 
     @NotNull(message = "Phone may not be null")
-    public Integer phone;
+    public String phone;
 }

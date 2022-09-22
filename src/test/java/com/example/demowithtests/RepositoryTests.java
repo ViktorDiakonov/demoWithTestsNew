@@ -100,11 +100,11 @@ public class RepositoryTests {
 
     @Test
     public void getEmployeeByPhoneTest() {
-        Employee employee = Employee.builder().phone(123456).build();
+        Employee employee = Employee.builder().phone("123456").build();
         repository.save(employee);
         List<Employee> employeesList = repository.findAll();
         //Assertions.assertThat(employeesList.get(0).getPhone()).isEqualTo(123456);
-        Assert.assertEquals(employeesList.get(0).getPhone(),123456,0.1);
+        Assert.assertEquals(employeesList.get(0).getPhone(),"123456",0.1);
     }
 
     @Test
