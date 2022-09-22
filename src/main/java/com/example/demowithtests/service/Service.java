@@ -12,7 +12,7 @@ public interface Service {
 
     Employee getById(Integer id);
 
-    Employee updateById(Integer id, Employee plane);
+    Employee updateById(Integer id, Employee employee);
 
     void removeById(Integer id);
 

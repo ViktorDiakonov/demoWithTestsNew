@@ -40,14 +40,14 @@ public class Controller {
 
     public EmployeeSaveDto saveEmployee(@RequestBody @Valid EmployeeSaveDto requestForSave) {
 
-        var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-        var dto = converter.toSaveDto(service.create(employee));
+        Employee employee = converter.getMapperFacade().map(requestForSave, Employee.class);
+        EmployeeSaveDto dto = converter.toSaveDto(service.create(employee));
 
         return dto;
 
     }
 
-    //save 2 sto
+    //save 2 dto
     @PostMapping("/users/save")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "This is endpoint to add a new employee.", description =
@@ -110,27 +110,36 @@ public class Controller {
         var dto = converter.toRead2Dto(employee);
         log.debug("getEmployeeById() Controller - end: name = {}", dto.name);
         return dto;
-
     }
 
     //Обновление юзера
-    @PutMapping("/users/{id}")
+    @PatchMapping ("/users/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "This is endpoint to update an employee by his id.", description =
-            "Create request to update an employee bu id", tags = {"Employee"})
+    @Operation(summary = "This is endpoint returned a employee by his id.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "OK.Employee by id was successfully updated"),
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-
-    public EmployeeUpdateDto UpdateEmployee(@RequestBody @Valid EmployeeUpdateDto requestForUpdate, @PathVariable Integer id) {
-
-        var employee = converter.getMapperFacade().map(requestForUpdate, Employee.class);
-        var dto = converter.toUpdateDto(service.create(employee));
-
+    public EmployeeUpdateDto refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        EmployeeUpdateDto dto = converter.toUpdateDto(service.updateById(id, employee));
         return dto;
+    }
 
+    //Обновление юзера2
+    @PatchMapping ("/users/update2/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "This is endpoint returned a employee by his id.", description =
+            "Create request to read a employee by id", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+    public EmployeeUpdate2Dto refreshEmployee2(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        EmployeeUpdate2Dto dto = converter.toUpdate2Dto(service.updateById(id, employee));
+        return dto;
     }
 
     //Удаление по id
@@ -176,7 +185,7 @@ public class Controller {
     }
 
     //обновление пользователя по телефону
-    @PutMapping("/users/{phone}")
+    @PutMapping("/users/phone/{phone}")
     @ResponseStatus(HttpStatus.OK)
     public Employee updatePhone(@PathVariable("phone") Integer phone, @RequestBody Employee employee) {
 

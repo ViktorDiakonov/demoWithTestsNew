@@ -17,9 +17,6 @@ public class EmployeeRead2Dto {
 
     public String country;
 
-    @NotNull
-    public int phone;
-
     @Email
     @NotNull
     public String email;

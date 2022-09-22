@@ -32,9 +32,12 @@ public class EmployeeConverter {
         return mapperFacade.map(entity, EmployeeRead2Dto.class);
     }
 
-
     public EmployeeUpdateDto toUpdateDto(Employee entity) {
         return mapperFacade.map(entity, EmployeeUpdateDto.class);
+    }
+
+    public EmployeeUpdate2Dto toUpdate2Dto(Employee entity) {
+        return mapperFacade.map(entity, EmployeeUpdate2Dto.class);
     }
 
     public Employee fromSaveDto(EmployeeSaveDto dto) {

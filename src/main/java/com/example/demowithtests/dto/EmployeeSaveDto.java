@@ -15,11 +15,18 @@ public class EmployeeSaveDto {
     @Schema(description = "Name of an employee.", example = "Billy", required = true)
     public String name;
 
+    @NotNull
     @Schema(description = "Name of the country.", example = "England", required = true)
     public String country;
+
+    @NotNull
+    public String address;
 
     @Email
     @NotNull
     @Schema(description = "Email address of an employee.", example = "billys@mail.com", required = true)
     public String email;
+
+    @NotNull(message = "Phone may not be null")
+    public Integer phone;
 }
