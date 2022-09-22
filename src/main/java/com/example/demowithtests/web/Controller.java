@@ -127,7 +127,7 @@ public class Controller {
         return dto;
     }
 
-    //Обновление юзера2
+    //Обновление юзера 2
     @PatchMapping ("/users/update2/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "This is endpoint returned a employee by his id.", description =
