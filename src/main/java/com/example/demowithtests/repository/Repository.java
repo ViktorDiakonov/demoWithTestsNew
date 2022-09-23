@@ -29,6 +29,6 @@ public interface Repository extends JpaRepository<Employee, Integer> {
     @Query("SELECT e FROM Employee e WHERE e.phone = ?1")
     List<Employee> getEmployeeByPhone (String phone);
 
-    @Query(value = "SELECT * FROM Users WHERE phone like ?%", nativeQuery = true)
+    @Query(value = "SELECT * FROM Users WHERE phone LIKE ?%", nativeQuery = true)
     List<Employee> getEmployeeByPhoneU(String phone);
 }
