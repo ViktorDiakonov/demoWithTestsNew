@@ -3,7 +3,7 @@ package com.example.demowithtests.web;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.*;
 import com.example.demowithtests.service.Service;
-import com.example.demowithtests.util.config.EmployeeConverter;
+import com.example.demowithtests.util.config.mapstruct.EmployeeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,9 +24,7 @@ import java.util.List;
 public class Controller {
 
     private final Service service;
-    private final EmployeeConverter converter;
-
-
+    private final EmployeeMapper mapper;
 
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")
@@ -39,12 +36,8 @@ public class Controller {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-    public EmployeeSaveDto saveEmployee(@RequestBody @Valid EmployeeSaveDto requestForSave) {
-
-        Employee employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-        EmployeeSaveDto dto = converter.toSaveDto(service.create(employee));
-
-        return dto;
+    public Employee saveEmployee(@RequestBody Employee employee) {
+        return service.create(employee);
     }
 
 
@@ -58,12 +51,8 @@ public class Controller {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-    public EmployeeSave2Dto saveEmployee2(@RequestBody @Valid EmployeeSave2Dto requestForSave) {
-
-        var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-        var dto = converter.toSave2Dto(service.create(employee));
-
-        return dto;
+    public EmployeeSaveDto saveEmployee2(@RequestBody Employee employee) {
+        return mapper.employeeSaveDto(service.create(employee));
     }
 
 
@@ -107,13 +96,8 @@ public class Controller {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
-    public EmployeeReadDto getEmployeeById(@PathVariable Integer id) {
-        log.debug("getEmployeeById() Controller - start: id = {}", id);
-        var employee = service.getById(id);
-        log.debug("getById() Controller - to dto start: id = {}", id);
-        var dto = converter.toReadDto(employee);
-        log.debug("getEmployeeById() Controller - end: name = {}", dto.name);
-        return dto;
+    public Employee getEmployeeById(@PathVariable Integer id) {
+        return service.getById(id);
     }
 
 
@@ -127,13 +111,8 @@ public class Controller {
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
 
-    public EmployeeRead2Dto getEmployeeById2 (@PathVariable Integer id) {
-        log.debug("getEmployeeById() Controller - start: id = {}", id);
-        var employee = service.getById(id);
-        log.debug("getById() Controller - to dto start: id = {}", id);
-        var dto = converter.toRead2Dto(employee);
-        log.debug("getEmployeeById() Controller - end: name = {}", dto.name);
-        return dto;
+    public EmployeeReadDto getEmployeeById2Dto (@PathVariable Integer id) {
+        return mapper.employeeReadDto(service.getById(id));
     }
 
     //Обновление юзера
@@ -147,24 +126,7 @@ public class Controller {
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public EmployeeUpdateDto refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        EmployeeUpdateDto dto = converter.toUpdateDto(service.updateById(id, employee));
-        return dto;
-    }
-
-
-    //Обновление юзера2
-    @PatchMapping ("/users/update2/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "This is endpoint returned a employee by his id.", description =
-            "Create request to read a employee by id", tags = {"Employee"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "OK. Information was get successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
-            @ApiResponse(responseCode = "409", description = "Employee already exists")})
-    public EmployeeUpdate2Dto refreshEmployee2(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        EmployeeUpdate2Dto dto = converter.toUpdate2Dto(service.updateById(id, employee));
-        return dto;
+        return mapper.employeeUpdateDto(service.updateById(id, employee));
     }
 
 
@@ -236,11 +198,4 @@ public class Controller {
         return service.getNameByPhone(phone);
     }
 
-//    //обновление пользователя по телефону
-//    @PutMapping("/users/phone/{phone}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Employee updatePhone(@PathVariable("phone") String phone, @RequestBody Employee employee) {
-//
-//        return service.updateById(phone, employee);
-//    }
 }
