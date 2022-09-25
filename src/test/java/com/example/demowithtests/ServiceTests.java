@@ -109,7 +109,7 @@ public class ServiceTests {
     public void whenGivenPhone_shouldReturnListEmployee() {
 
         Employee user = new Employee();
-        user.setPhone(123456);
+        user.setPhone("123456");
 
         List<Employee> employee = new ArrayList<>();
         employee.add(user);
@@ -118,7 +118,7 @@ public class ServiceTests {
 
         List<Employee> expected = service.getNameByPhone(user.getPhone());
 
-        assertThat(expected.get(0).getPhone()).isEqualTo(123456);
+        assertThat(expected.get(0).getPhone()).isEqualTo("123456");
         assertThat(expected.size()).isGreaterThan(0);
         assertThat(expected).isSameAs(employee);
 

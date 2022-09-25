@@ -7,7 +7,6 @@ import ma.glasnost.orika.MappingContext;
 
 public class EmployeeMapper extends CustomMapper<Employee, EmployeeSaveDto> {
 
-
     @Override
     public void mapBtoA(EmployeeSaveDto dto, Employee entity, MappingContext context) {
         super.mapBtoA(dto, entity, context);

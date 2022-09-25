@@ -22,6 +22,7 @@ public interface Repository extends JpaRepository<Employee, Integer> {
     List<Employee> getEmployeeByCountry(String country);
 
     // выводит всех пользователей из колонки "name"
+
     @Query(value = "SELECT name FROM users", nativeQuery = true)
     List<Employee> getAllByName(String name);
 
